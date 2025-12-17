@@ -1,5 +1,7 @@
 import streamlit as st
 from master_agent import MasterAgent
+from dotenv import load_dotenv
+load_dotenv()
 
 st.set_page_config(page_title="Agentic Pharma AI", layout="wide")
 
