@@ -1,10 +1,7 @@
 streamlit
-ollama
-langchain
-langchain-community
-reportlab
+requests
 pandas
 matplotlib
-PyMuPDF
-requests
+reportlab
+langchain-community
 groq
