@@ -11,10 +11,11 @@
 
 from groq import Groq
 import os
+api_key = os.getenv("GROQ_API_KEY")
 
 class WebAgent:
     def __init__(self):
-        self.client = Groq(api_key="api_key")
+        self.client = Groq(api_key)
 
     def run(self, query: str) -> str:
         prompt = f"""
