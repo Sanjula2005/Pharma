@@ -1,25 +1,28 @@
-# agents/web_agent.py
 
-from crewai import Agent               # ✅ Needed for agent creation
-from langchain_ollama import OllamaLLM  # ✅ Correct import for latest LangChain versions
-from tools.mock_web_tool import mock_web_intelligence_tool  # ✅ Import your tool
+from groq import Groq
+import os
 
-# Initialize your local Ollama LLM
-local_llm = OllamaLLM(model="llama3:8b", base_url="http://localhost:11434")
+class WebAgent:
+    def __init__(self):
+        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# Define the Web Intelligence Agent
-web_intelligence_agent = Agent(
-    role="Real-time Web Intelligence Specialist",
-    goal="Perform web-like searches and summarize recent findings about a molecule or indication.",
-    backstory="A digital researcher scanning web sources for recent scientific and patient insights.",
-    tools=[mock_web_intelligence_tool],
-    llm=local_llm,
-    verbose=True
-)
+    def run(self, query: str) -> str:
+        prompt = f"""
+You are a pharmaceutical web intelligence agent.
 
-if __name__ == "__main__":
-    # Test the web agent directly
-    query = "Tadalafil new use"
-    print("\n🧠 Running Web Intelligence Agent...")
-    result = mock_web_intelligence_tool(query)
-    print("\n✅ Tool Output:\n", result)
+Task:
+- Analyze the user query
+- Summarize recent scientific, clinical, regulatory, or news insights
+- Keep it concise and factual
+
+User Query:
+{query}
+"""
+
+        response = self.client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.2,
+        )
+
+        return response.choices[0].message.content.strip()
