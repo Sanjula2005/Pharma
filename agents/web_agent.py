@@ -14,7 +14,7 @@ import os
 
 class WebAgent:
     def __init__(self):
-        self.client = Groq(api_key="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")
+        self.client = Groq(api_key="api_key")
 
     def run(self, query: str) -> str:
         prompt = f"""
